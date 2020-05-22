@@ -11,7 +11,7 @@ hidden_size_1 = 2048    # num of lstm layer dimension
 hidden_size_2 = 2048    # I just played around with these numbers. after adding more math to the questions 
                             # ... it needed more neurons.
 batch_size = 256        # number of pairs trained before network weights being updated
-max_epochs = 25        # max number of epochs to be trained
+max_epochs = 100        # max number of epochs to be trained
 
 # additional counters 
 epoch_count = 1
