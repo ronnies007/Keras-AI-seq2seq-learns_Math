@@ -9,7 +9,7 @@ original source seems to be: https://keras.io/examples/nlp/addition_rnn/
 
 - u need to define log- and checkpoint- path as well as log_file name at the top of the code.
 - at the end of each epoch u will get validation examples. to see how good it got so far.
-  also the model will be saved at this point. as it will be at the end of training.
+  also the model will be saved at this point(3x). as it will be at the end of training.
 - there is a NN_config.py which is just empty. Since I dont like using the keras FLAG stuff, this is my way to get global
   variables like path etc. using the global character of the imported variables.
 - during training there is a custom logfile written. it needs to be opened manually from another console. 
