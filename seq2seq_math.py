@@ -61,7 +61,7 @@ maxlen = cfg.digits + addMe + cfg.digits
 chars = '0123456789+-*/. '
 ctable = CharacterTable(chars)
 
-# ---------------------------------------------------- creates a questions/answers set in form of strings e.g. q='123-5' a'=118' ----
+# ------- creates a questions/answers set in form of strings e.g. q='123-5' a'=118' ----
 def send_new_data(questions, expected):
     print('Generating data...')
     questions = []
@@ -157,7 +157,8 @@ else:
     model.add(LSTM(cfg.hidden_size_1, input_shape=(maxlen, len(chars)))) 
     # As the decoder RNN's input, repeatedly provide with the last hidden state of
     # RNN for each time step. Repeat 'DIGITS + addMe' times as that's the maximum length of output, 
-    # (e.g., when DIGITS=3, max output is 999+999=1998.) --> this is not true anymore since I added multiplikation, which needs more space
+    # (e.g., when DIGITS=3, max output is 999+999=1998.) --> this is not true anymore since I added multiplikation, 
+    # which needs more space
     model.add(RepeatVector(cfg.digits + addMe))
     model.add(LSTM(cfg.hidden_size_2, return_sequences=True)) 
     # model.add(Dropout(0.1))
@@ -212,7 +213,8 @@ def on_epoch_end(epoch, logs):
 
 print_callback = LambdaCallback(on_epoch_end=on_epoch_end)
 batch_callback = LambdaCallback(on_batch_end=on_batch_end) # save_weights_only=True
-checkpoint_save = ModelCheckpoint(cfg.checkpoint_path + "checkpoint_model_00000{cfg.epoch_count:02d}.hdf5", save_best_only=True, monitor='val_loss', mode='auto', period=3)
+checkpoint_save = ModelCheckpoint(cfg.checkpoint_path + "checkpoint_model_00000{cfg.epoch_count:02d}.hdf5", 
+                                  save_best_only=True, monitor='val_loss', mode='auto', period=3)
 callbacks = []
 callbacks.append(checkpoint_save)
 callbacks.append(print_callback)
