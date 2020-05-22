@@ -14,7 +14,7 @@ original source seems to be: https://keras.io/examples/nlp/addition_rnn/
   also the model will be saved at this point(3x). as it will be at the end of training.
 - during training there is a custom logfile written. it needs to be opened manually from another console. 
   then its possible to watch the learning curves. (the matplotlib code is messy. sry, its old. I just quickly adapted
-  it for this project. some functions like zooming in and staying there, are missing.)
+  it for this project.)
   
 - new training batches are being created before every epoch now, ..my conclusion is, that way, it cannot overfit so easily.
 - the current model takes quite some time to train. I am still experimenting with 'val_accuracy=0.9200' atm.
