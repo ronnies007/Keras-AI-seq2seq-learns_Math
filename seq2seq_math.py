@@ -61,7 +61,7 @@ maxlen = cfg.digits + addMe + cfg.digits
 chars = '0123456789+-*/. '
 ctable = CharacterTable(chars)
 
-# ------- creates a questions/answers set in form of strings e.g. q='123-5' a'=118' ----
+# --- creates a questions/answers set in form of strings e.g. q='123-5' a'=118' ----
 def send_new_data(questions, expected):
     print('Generating data...')
     questions = []
@@ -205,16 +205,17 @@ def on_batch_end(batch, logs):
 def on_epoch_end(epoch, logs):
     # Function invoked at end of each epoch. only to hold track of the actual epochs,
     # because training runs in custom loop with epochs=1
-    cfg.epoch_count += 1
+    cfg.epoch_count += 1 # {epoch:02d}_{val_loss:.2f}
     print("\n")
-    print('----------- Epoch: %d' + '/' + '%b' +' -----------' %(cfg.epoch_count,cfg.max_epochs))
+    print('----------- Epoch: {cfg.epoch_count:02d}/{cfg.max_epochs:02d} -----------')
     print(' questions   truth    predicted  ')
 
 
 print_callback = LambdaCallback(on_epoch_end=on_epoch_end)
 batch_callback = LambdaCallback(on_batch_end=on_batch_end) # save_weights_only=True
+# period=3 --> should be how many epochs in between saves but here i am not sure
 checkpoint_save = ModelCheckpoint(cfg.checkpoint_path + "checkpoint_model_00000{cfg.epoch_count:02d}.hdf5", 
-                                  save_best_only=True, monitor='val_loss', mode='auto', period=3)
+                                            save_best_only=True, monitor='val_loss', mode='auto', period=3)
 callbacks = []
 callbacks.append(checkpoint_save)
 callbacks.append(print_callback)
