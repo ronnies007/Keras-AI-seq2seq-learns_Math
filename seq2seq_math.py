@@ -15,9 +15,9 @@ import pandas as pd
 
 
 # The GPU id to use, usually either "0" or "1"
-os.environ['CUDA_DEVICE_ORDER'] = 'PCI_BUS_ID'
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
+os.environ['CUDA_DEVICE_ORDER'] = 'PCI_BUS_ID'  # to avoid mess, important if u have clusters of gpus
+os.environ['CUDA_VISIBLE_DEVICES'] = '0' # we all know this one --> select gpu id
+os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true' # this one is very nice. --> now only needed gpu ram will be reserved by keras
 
 class CharacterTable(object):
     """Given a set of characters:
