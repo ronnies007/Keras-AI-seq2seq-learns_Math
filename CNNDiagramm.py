@@ -9,16 +9,12 @@ from dateutil import parser
 from datetime import datetime
 import pandas as pd
 import numpy as np
-# import datetime
 import math
 import matplotlib.dates as mdates
 from matplotlib.lines import Line2D
 import matplotlib.ticker as mticker
-import config as cfg
-#import seaborn
+import seaborn
 from matplotlib.font_manager import FontProperties
-#from PointBrowser import PointBrowser
-import config as cfg
 from matplotlib import style
 import sys
 import subprocess
@@ -43,18 +39,21 @@ fig = plt.figure(figsize=(7, 4))
 fig.fontsize = 9
 latest = 400 #1440 #int(cfg.latest)
 
-states_path = cfg.checkpoint_path # 'R:/temp/' 
+states_path = cfg.log_path # 'R:/temp/' 
+log_file = cfg.log_file
 sw = True
 f=0
 ## ---------- wait for data file to fill ------------
 while (f == 0):
+    print(str(states_path + log_file))
     try:
-        df = pd.read_csv(states_path + cfg.log_file, sep=",", header=0, encoding="utf8", low_memory=False) #, parse_dates=True)
+        df = pd.read_csv(str(states_path + log_file), sep=",", header=0, encoding="utf8", low_memory=False) #, parse_dates=True)
         if (len(df.batch) > 3): 
             f = 1
         else:
             print ("waiting for data...", end="\r")          
     except:     
+        print ("file loading problem")
         pass
     time.sleep(2)
     
@@ -86,8 +85,8 @@ def on_ylims_change(axes):
 
 
 def resetView():
-    global ax1, zoomX1, zoomX2, zoomY1, zoomY2, plt, sw, lastEpisode, dmaxVal, dminVal, df, states_path
-    df = pd.read_csv(states_path + cfg.log_file, sep=",", header=0, encoding="utf8", low_memory=False) # , parse_dates=True)
+    global ax1, zoomX1, zoomX2, zoomY1, zoomY2, plt, sw, lastEpisode, dmaxVal, dminVal, df, states_path, log_file
+    df = pd.read_csv(str(states_path + log_file), sep=",", header=0, encoding="utf8", low_memory=False) # , parse_dates=True)
     dmaxVal, dminVal = getMinMax(df)
     zoomX1, zoomX2, zoomY1, zoomY2 = -10, lastRun + 10, dminVal, dmaxVal  # specify the limits
     sw = False
@@ -107,14 +106,14 @@ def press(event):
 
 
 def animate(i):
-    global dminVal, lastRun_old, lastRun, dmaxVal, qlive, ax1, zoomX1, zoomX2, zoomY1, zoomY2, plt, df, sw, xview, lastEpisode_old, states_path, lastEpisode
+    global dminVal, lastRun_old, lastRun, dmaxVal, qlive, ax1, zoomX1, zoomX2, zoomY1, zoomY2, plt, df, sw, xview, lastEpisode_old, states_path, lastEpisode, log_file
     print(df.columns)
     # ax1 = fig.add_subplot(1,1,1)
     # ax1.xaxis_date()
     #plt.savefig('test.pdf')
     # ax1.set_xlim(xlim)
     # ax1.set_ylim(ylim)
-    df = pd.read_csv(states_path + cfg.log_file, sep=",", header=0, encoding="utf8", low_memory=False) #, parse_dates=True)
+    df = pd.read_csv(str(states_path + log_file), sep=",", header=0, encoding="utf8", low_memory=False) #, parse_dates=True)
 
     lastEpisode = int(df['batch'].max()) #int(df['epoch'].iloc[-1])
     
