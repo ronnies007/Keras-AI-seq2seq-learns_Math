@@ -5,6 +5,8 @@ code taken from here: https://github.com/lukas/ml-class/blob/master/videos/seq2s
 
 original source seems to be: https://keras.io/examples/nlp/addition_rnn/
 
+
+
 - u need to define log- and checkpoint- path as well as log_file name at the top of the code.
 - at the end of each epoch u will get validation examples. to see how good it got so far.
   also the model will be saved at this point. as it will be at the end of training.
