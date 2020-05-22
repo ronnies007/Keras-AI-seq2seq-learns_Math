@@ -216,7 +216,7 @@ print_callback = LambdaCallback(on_epoch_end=on_epoch_end)
 batch_callback = LambdaCallback(on_batch_end=on_batch_end) # save_weights_only=True
 
 checkpoint_save = ModelCheckpoint(str(cfg.checkpoint_path) + "checkpoint_model_00000" + str(cfg.epoch_count) + ".hdf5", 
-                                            save_best_only=True, monitor='val_loss', mode='auto', period=1)
+                                            save_best_only=True, monitor='val_loss', mode='auto', period=3)
                                                                 # period=3 --> how many epochs in between saves 
 callbacks = []
 callbacks.append(checkpoint_save)
