@@ -214,7 +214,7 @@ def on_epoch_end(epoch, logs):
 print_callback = LambdaCallback(on_epoch_end=on_epoch_end)
 batch_callback = LambdaCallback(on_batch_end=on_batch_end) # save_weights_only=True
 # period=3 --> should be how many epochs in between saves but here i am not sure
-checkpoint_save = ModelCheckpoint(cfg.checkpoint_path + "checkpoint_model_00000{cfg.epoch_count:02d}.hdf5", 
+checkpoint_save = ModelCheckpoint(str(cfg.checkpoint_path) + "checkpoint_model_00000{epoch_count:02d}.hdf5", 
                                             save_best_only=True, monitor='val_loss', mode='auto', period=3)
 callbacks = []
 callbacks.append(checkpoint_save)
@@ -226,6 +226,7 @@ x_train, y_train, x_val, y_val, questions, expected = send_new_data([], []) # ge
 
 # train    
 for iteration in range( 1, cfg.max_epochs ):
+    epoch_count = cfg.epoch_count
     model.fit(x_train, y_train,
         batch_size=cfg.batch_size,
         epochs=1,
