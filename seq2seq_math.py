@@ -208,7 +208,7 @@ def on_epoch_end(epoch, logs):
     cfg.epoch_count += 1
     print("\n")
     print('----------- Epoch: %d' + '/' + '%b' +' -----------' %(cfg.epoch_count,cfg.max_epochs))
-    print(' questions   truth    predicted  '
+    print(' questions   truth    predicted  ')
 
 
 print_callback = LambdaCallback(on_epoch_end=on_epoch_end)
