@@ -2,6 +2,7 @@
 seq2seq model in keras extended from addition to all four basic computations (+, -, *, /)
 
 code taken from here: https://github.com/lukas/ml-class/blob/master/videos/seq2seq/train.py
+
 original source seems to be: https://keras.io/examples/nlp/addition_rnn/
 
 - u need to define log- and checkpoint- path as well as log_file name at the top of the code.
