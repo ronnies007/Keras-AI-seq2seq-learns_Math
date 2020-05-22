@@ -207,7 +207,7 @@ def on_epoch_end(epoch, logs):
     # because training runs in custom loop with epochs=1
     cfg.epoch_count += 1 # {epoch:02d}_{val_loss:.2f}
     print("\n")
-    print('----------- Epoch: {cfg.epoch_count:02d}/{cfg.max_epochs:02d} -----------')
+    print('--------- Epoch: ' + str(cfg.epoch_count) + '/' + str(cfg.max_epochs) + ' ----------')
     print(' questions   truth    predicted  ')
 
 
