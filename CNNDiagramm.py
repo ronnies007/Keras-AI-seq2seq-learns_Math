@@ -62,7 +62,9 @@ lastRun = int(df['batch'].max())
 dmaxVal, dminVal = getMinMax(df)
 # ax1.xaxis_date()
 print ("dmaxVal, dminVal:", dmaxVal,",", dminVal)
+
 zoomX1, zoomX2, zoomY1, zoomY2 = -100, lastRun + 10, dminVal, dmaxVal    # specify the limits
+zoomX1, zoomX2, zoomY1, zoomY2 = -10, lastRun + 10, dminVal, dmaxVal  # specify the limits
 xview = lastEpisode - df['batch'].iloc[-2]
 lastEpisode_old = lastEpisode
 lastRun_old = lastRun
@@ -70,9 +72,8 @@ qlive = []
 
 # Declare and register callbacks
 def on_xlims_change(axes):
-    global ax1, zoomX1, zoomX2, zoomY1, zoomY2, sw, xview
+    global ax1, zoomX1, zoomX2, zoomY1, zoomY2, sw
     zoomX1, zoomX2 = ax1.get_xlim()
-    #xview = float()
     sw = True
     print ("updated xlims: ", zoomX1, zoomX2)
 
@@ -118,19 +119,17 @@ def animate(i):
     lastEpisode = int(df['batch'].max()) #int(df['epoch'].iloc[-1])
     
     lastRun = int(df['batch'].max())
-    dmaxVal, dminVal = getMinMax(df)
-    zoomX1, zoomX2, zoomY1, zoomY2 = -10, lastRun + 10, dminVal, dmaxVal  # specify the limits
-
+    # dmaxVal, dminVal = getMinMax(df)
+    # zoomX1, zoomX2, zoomY1, zoomY2 = -10, lastRun + 10, dminVal, dmaxVal  # specify the limits
+    
     xview = int(lastEpisode - df['batch'].iloc[-2])   
     print (xview)   
 
     latest = len(df.batch) # to shrink the diagramm (not used)
     #reduce to latest factor
     if len(df.batch) > int(latest):        # Drop 
-
         ld = len(df.batch) - int(latest)
         df.drop(df.batch[:ld], inplace=True)
-
     else:                           # do not drop (log < 24h = 1440)
         print('nothing to drop')
         print('\r\n')
@@ -144,20 +143,14 @@ def animate(i):
     ax1.xaxis.grid(color='gray', linestyle='dashed') # backgr. grid
     #ax1.autoscale_view()
     ax1.set_facecolor((0.8, 0.8, 0.8))   # backgr. color grey
-    if not (lastRun_old == lastRun):   
-        plt.xlim(zoomX1, zoomX2)
-        plt.ylim(zoomY1, zoomY2)
-    else:
-        plt.xlim(zoomX1, zoomX2)
-        plt.ylim(zoomY1, zoomY2)
+
+    plt.xlim(zoomX1, zoomX2)
+    plt.ylim(zoomY1, zoomY2)
 
     ax1.set_title('seq2seq training state  @trained batch '+ str(int(np.max(df.batch)+2)) )
     for label in ax1.xaxis.get_ticklabels(): label.set_rotation(20)  #x-achse rotate annot.
 
-    
-
     plt.tight_layout()
-
 
     print ("lastEpisode: ", lastEpisode)
 
@@ -169,7 +162,7 @@ def animate(i):
             #xview = int(df['epoch'].iloc[-1]) - int(df['epoch'].iloc[-2]) 
             plt.xlim(int(zoomX1), int(zoomX2))
             plt.ylim(zoomY1, zoomY2)
-            #zoomX1, zoomX2 = ax1.get_xlim()
+            zoomX1, zoomX2 = ax1.get_xlim()
             #plt.show()
         else:
             dmaxVal, dminVal = getMinMax(df)   
@@ -180,7 +173,7 @@ def animate(i):
         if not (lastRun_old == lastRun):              
             lastRun_old = lastRun
             xview = int(df['batch'].iloc[-1]) - int(df['batch'].iloc[-2]) 
-            plt.xlim(int(zoomX1), int(zoomX2+xview))
+            plt.xlim(int(zoomX1+xview), int(zoomX2+xview))
             plt.ylim(zoomY1, zoomY2)
             zoomX1, zoomX2 = ax1.get_xlim()
             #plt.show()
@@ -191,25 +184,12 @@ def animate(i):
     plot1, = plt.plot(df.index, df['loss'], label="loss.", marker="", picker=3, linewidth=1)
     plot2, = plt.plot(df.index, df['accuracy'], label="acc.", marker="", picker=3, linewidth=1)
     
-    #plot6, = plt.plot(cfg.getQ(), label="run", marker="+", picker=5, linewidth=.8)
-    #plot7, = plt.plot(df.stateTime, df['cfg.maxVTemp'], label="maxV", marker="x", linestyle='dashed', picker=3)
-    #plot8, = plt.plot(df.stateTime, df['fehler'], label="F1", marker="o", picker=5)
-
-    #ax2 = ax1.twinx()
-    #ax2.set_ylim([-30,30])
-
     plt.legend([plot1,plot2],['loss.', 'acc.'], loc="upper left",  bbox_transform=fig.transFigure)
-    #fig.savefig('test.pdf')
 
-    #ax2.plot(df.time, df['fehler'], label="F1", marker="o", color='C7', picker=5)
-    #ax2.set_ylabel('fehler', color='C7', font="Arial")
-    #ax2.tick_params('f', color='C7', font="Arial")
-    
     ax1.callbacks.connect('xlim_changed', on_xlims_change)
     ax1.callbacks.connect('ylim_changed', on_ylims_change)
     fig.canvas.mpl_connect('key_press_event', press)
 
-    
 
 ani = animation.FuncAnimation(fig, animate, interval=1000)
 #fig.canvas.mpl_connect('button_press_event', onpress)
