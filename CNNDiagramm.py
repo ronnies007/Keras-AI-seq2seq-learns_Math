@@ -151,7 +151,7 @@ def animate(i):
         plt.xlim(zoomX1, zoomX2)
         plt.ylim(zoomY1, zoomY2)
 
-    ax1.set_title('lstm training state  @trained batch '+ str(int(np.max(df.batch)+2)) )
+    ax1.set_title('seq2seq training state  @trained batch '+ str(int(np.max(df.batch)+2)) )
     for label in ax1.xaxis.get_ticklabels(): label.set_rotation(20)  #x-achse rotate annot.
 
     
