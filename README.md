@@ -13,6 +13,11 @@ seq2seq model in keras extended from addition to all four basic computations (+,
   then its possible to watch the learning curves. (the matplotlib code is messy. sry, its old. I just quickly adapted
   it for this project. some functions like zooming in and staying there, are missing.)
   
+- new training batches are being created before every epoch now, ..my conclusion is, that way, it cannot overfit so easily.
+- the current model takes quite some time to train. I am still experimenting with 'val_accuracy=0.9200' atm.
+  so not every answer is correct. in my eyes it needs val_accuracy 0.99 at least to be trusted.
+
+
 whats missing is user input to manually type in questions and hit enter for answer(s).
 feel free to test. have fun.
 
