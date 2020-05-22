@@ -203,6 +203,7 @@ def on_batch_end(batch, logs):
 
 
 def on_epoch_end(epoch, logs):
+    
     # Function invoked at end of each epoch. only to hold track of the actual epochs,
     # because training runs in custom loop with epochs=1
     cfg.epoch_count += 1 # {epoch:02d}_{val_loss:.2f}
@@ -213,9 +214,10 @@ def on_epoch_end(epoch, logs):
 
 print_callback = LambdaCallback(on_epoch_end=on_epoch_end)
 batch_callback = LambdaCallback(on_batch_end=on_batch_end) # save_weights_only=True
-# period=3 --> should be how many epochs in between saves but here i am not sure
-checkpoint_save = ModelCheckpoint(str(cfg.checkpoint_path) + "checkpoint_model_00000{epoch_count:02d}.hdf5", 
-                                            save_best_only=True, monitor='val_loss', mode='auto', period=3)
+
+checkpoint_save = ModelCheckpoint(str(cfg.checkpoint_path) + "checkpoint_model_00000" + str(cfg.epoch_count) + ".hdf5", 
+                                            save_best_only=True, monitor='val_loss', mode='auto', period=1)
+                                                                # period=3 --> how many epochs in between saves 
 callbacks = []
 callbacks.append(checkpoint_save)
 callbacks.append(print_callback)
@@ -226,7 +228,6 @@ x_train, y_train, x_val, y_val, questions, expected = send_new_data([], []) # ge
 
 # train    
 for iteration in range( 1, cfg.max_epochs ):
-    epoch_count = cfg.epoch_count
     model.fit(x_train, y_train,
         batch_size=cfg.batch_size,
         epochs=1,
