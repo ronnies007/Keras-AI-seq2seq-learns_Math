@@ -43,7 +43,7 @@ fig = plt.figure(figsize=(7, 4))
 fig.fontsize = 9
 latest = 400 #1440 #int(cfg.latest)
 
-states_path = cfg.checkpoint # 'R:/temp/' 
+states_path = cfg.checkpoint_path # 'R:/temp/' 
 sw = True
 f=0
 ## ---------- wait for data file to fill ------------
