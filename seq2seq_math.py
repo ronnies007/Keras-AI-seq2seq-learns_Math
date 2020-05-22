@@ -173,18 +173,23 @@ else:
 
 
 if os.path.exists(cfg.log_path):
-   if not os.path.exists(cfg.log_path + cfg.log_file):     
-    # WRITE A BRANDNEW Logfile
-    print(cfg.log_path + cfg.log_file, "not found.")
-    print("new logfile is being created... @", cfg.log_path)
-    try:
-        cfg.logfile3 = open(cfg.log_path + cfg.log_file,"w")
-        cfg.logfile3.write("time,batch,loss,accuracy")
-        cfg.logfile3.write("\r\n") 
-        cfg.logfile3.close() 
-        time.sleep(2)
-    except: 
-        print ("logfile path does not exist.")
+    if not os.path.exists(cfg.log_path + cfg.log_file):     
+        # WRITE A BRANDNEW Logfile
+        print(cfg.log_path + cfg.log_file, "not found.")
+        print("new logfile is being created... @", cfg.log_path)
+        try:
+            cfg.logfile3 = open(cfg.log_path + cfg.log_file,"w")
+            cfg.logfile3.write("time,batch,loss,accuracy")
+            cfg.logfile3.write("\r\n") 
+            cfg.logfile3.close() 
+            time.sleep(2)
+        except: 
+            print ("logfile path does not exist.")
+    else:
+        print("--> logs will be appended to existing logfile")
+        df = pd.read_csv(cfg.log_path + cfg.log_file)
+        cfg.step_counter = df['batch'].max()
+        makeNew = False
 
 
 def on_batch_end(batch, logs):
