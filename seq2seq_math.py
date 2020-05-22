@@ -11,10 +11,10 @@ import math
 import time
 from datetime import datetime
 import os
-import matplotlib.pyplot as plt
-from visual_callbacks import AccLossPlotter
+import pandas as pd
 
-# The GPU id to use, usually either "0" or "1";
+
+# The GPU id to use, usually either "0" or "1"
 os.environ['CUDA_DEVICE_ORDER'] = 'PCI_BUS_ID'
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
