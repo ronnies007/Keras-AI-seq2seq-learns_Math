@@ -85,6 +85,7 @@ def on_ylims_change(axes):
 
 def resetView():
     global ax1, zoomX1, zoomX2, zoomY1, zoomY2, plt, sw, lastEpisode, dmaxVal, dminVal, df, states_path, log_file
+    lastRun_old = lastRun
     try:
         df = pd.read_csv(str(states_path + log_file), sep=",", header=0, encoding="utf8", low_memory=False) # , parse_dates=True)
         lastRun = int(df['batch'].max())
@@ -93,10 +94,12 @@ def resetView():
         sw = False
         plt.xlim(zoomX1, zoomX2)
         plt.ylim(zoomY1, zoomY2)
-        plt.show()
+        # plt.show()
     except:
         pass
-
+    lastRun = int(df['batch'].max())
+    dmaxVal, dminVal = getMinMax(df)
+    zoomX1, zoomX2, zoomY1, zoomY2 = -10, lastRun + len(df)/10, dminVal, dmaxVal  # specify the limits
 
 def to_datetime_object(date_string, date_f):
     s = datetime.strptime(date_string, date_f)
@@ -106,6 +109,7 @@ def press(event):
     print('press', event.key)
     sys.stdout.flush()
     if event.key == ' ':
+        sw = False
         resetView()
 
 def animate(i):
@@ -134,9 +138,9 @@ def animate(i):
         ax1.xaxis.grid(color='gray', linestyle='dashed') # backgr. grid
         #ax1.autoscale_view()
         ax1.set_facecolor((0.8, 0.8, 0.8))   # backgr. color grey
-        lastRun = int(df['batch'].iloc[-1])
+        lastRun = int(df['batch'].max())
 
-        if (sw==False):        #  no zoom or movement = reset
+        if (sw == False):        #  no zoom or movement = reset
             if not (lastRun_old == lastRun): 
                 dmaxVal, dminVal = getMinMax(df)   
                 zoomX1, zoomX2, zoomY1, zoomY2 = -10, lastRun + len(df)/10, dminVal, dmaxVal  # specify the limits  
@@ -149,7 +153,7 @@ def animate(i):
                 plt.xlim(zoomX1, zoomX2)
                 plt.ylim(dminVal, dmaxVal)
 
-        elif (sw==True):      # with zoom or movement
+        elif (sw == True):      # with zoom or movement
             if not (lastRun_old == lastRun):   
                 xview = lastRun - lastRun_old            
                 # xview = int(df['batch'].iloc[-1]) - int(df['batch'].iloc[-2]) 
@@ -166,7 +170,7 @@ def animate(i):
         ax1.set_title('seq2seq training state  @trained batch '+ str(int(np.max(df.batch)+2)) )
         for label in ax1.xaxis.get_ticklabels(): label.set_rotation(20)  #x-achse rotate annot.
         plt.tight_layout()
-        print ("lastEpisode: ", lastEpisode)
+        print ("lastEpisode: ", lastRun)
         
         plot1, = plt.plot(df.index, df['loss'], label="loss.", marker="", picker=3, linewidth=1)
         plot2, = plt.plot(df.index, df['accuracy'], label="acc.", marker="", picker=3, linewidth=1)
